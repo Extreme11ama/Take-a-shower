@@ -11,7 +11,7 @@
 import { useState } from 'react'
 import { Modal } from './Modal'
 import { toDateKey, getToday } from '../library/utils'
-import styles from './CalendarModal.css'
+import styles from './CalendarModal.module.css'
  
 const DAY_HEADERS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
  

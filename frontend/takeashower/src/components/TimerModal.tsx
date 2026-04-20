@@ -8,7 +8,7 @@
  
 import { Modal } from './Modal'
 import { useTimer } from '../hooks/useTimer'
-import styles from './TimerModal.css'
+import styles from './TimerModal.module.css'
  
 const RADIUS = 70
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS // ≈ 439.8

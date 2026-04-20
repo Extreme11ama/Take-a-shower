@@ -1,0 +1,132 @@
+/* LoginPage.module.css */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #F5F0EB 0%, #EEF4ED 60%, #D6E4E0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.card {
+  background: rgba(253, 249, 244, 0.9);
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.icon {
+  font-size: 36px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: #3A3530;
+  margin-bottom: 0.35rem;
+}
+
+.sub {
+  font-size: 14px;
+  color: #9B948E;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8BAE8A;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9B948E;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 12px;
+  background: #FDF9F4;
+  font-size: 15px;
+  color: #3A3530;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: #8BAE8A;
+}
+
+.error {
+  font-size: 13px;
+  color: #C04828;
+  margin-top: 0.5rem;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 0.85rem;
+  background: #8BAE8A;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover {
+  background: #7A9E79;
+}
+
+.footer {
+  margin-top: 1.25rem;
+  font-size: 13px;
+  color: #9B948E;
+}
+
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8BAE8A;
+  font-size: 13px;
+  padding: 0;
+  font-family: inherit;
+}

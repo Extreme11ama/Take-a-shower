@@ -9,7 +9,7 @@
 // and compose content inside it. DRY = Don't Repeat Yourself.
  
 import { useEffect } from 'react'
-import styles from './Modal.css'
+import styles from './Modal.module.css'
  
 interface ModalProps {
   open: boolean

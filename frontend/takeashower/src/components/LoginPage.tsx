@@ -20,7 +20,7 @@
 import { useState } from 'react'
 import { auth, profile } from '../library/api'
 import type { ScheduleInterval } from '../types'
-import styles from './LoginPage.css'
+import styles from './LoginPage.module.css'
  
 interface LoginPageProps {
   // Updated signature: we pass back both username AND their schedule

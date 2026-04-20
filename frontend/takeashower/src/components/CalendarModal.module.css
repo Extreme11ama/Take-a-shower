@@ -1,0 +1,135 @@
+/* CalendarModal.module.css */
+ 
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+ 
+.monthLabel {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #3A3530;
+}
+ 
+.navBtn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6B6460;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+ 
+.navBtn:hover {
+  background: #EEF4ED;
+}
+ 
+/* 7 equal columns for the calendar grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+ 
+.dayHeader {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9B948E;
+  padding: 0.25rem 0;
+}
+ 
+.cell {
+  aspect-ratio: 1; /* makes each cell a perfect square */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 50%; /* circle shape */
+  cursor: pointer;
+  color: #6B6460;
+  transition: background 0.15s;
+}
+ 
+.cell:hover:not(.past):not(.showerDay) {
+  background: #EEF4ED;
+}
+ 
+.past {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+ 
+/* Today gets a small dot indicator underneath the number */
+.today {
+  font-weight: 500;
+  color: #3A3530;
+  position: relative;
+}
+ 
+.today::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #B5A89A;
+}
+ 
+.showerDay {
+  background: #8BAE8A;
+  color: white;
+  font-weight: 500;
+}
+ 
+.showerDay:hover {
+  background: #7A9E79;
+}
+ 
+/* Legend at the bottom */
+.legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(181, 168, 154, 0.3);
+  flex-wrap: wrap;
+}
+ 
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #9B948E;
+}
+ 
+.legendDotGreen {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #8BAE8A;
+}
+ 
+.legendDotStone {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #B5A89A;
+  opacity: 0.6;
+}

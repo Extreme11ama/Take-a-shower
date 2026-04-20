@@ -1,0 +1,110 @@
+/* TimerModal.module.css */
+
+.ringWrap {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.ringContainer {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.ringInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.timeDisplay {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: #3A3530;
+  line-height: 1;
+}
+
+.finished {
+  color: #8BAE8A;
+}
+
+.hint {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9B948E;
+  margin-top: 4px;
+}
+
+.durationGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.durBtn {
+  padding: 0.6rem 0.25rem;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 10px;
+  background: #FDF9F4;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6B6460;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.durBtn:hover {
+  background: #EEF4ED;
+  border-color: #8BAE8A;
+}
+
+.durSelected {
+  background: #EEF4ED;
+  border-color: #8BAE8A;
+  color: #3A3530;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.startBtn {
+  flex: 1;
+  padding: 0.85rem;
+  background: #8BAE8A;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.startBtn:hover {
+  background: #7A9E79;
+}
+
+.resetBtn {
+  padding: 0.85rem 1.25rem;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 12px;
+  background: transparent;
+  font-size: 15px;
+  color: #6B6460;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resetBtn:hover {
+  background: #F5F0EB;
+}

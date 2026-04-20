@@ -12,7 +12,7 @@
 import { useState } from 'react'
 import { Modal } from './Modal'
 import type { ScheduleInterval } from '../types'
-import styles from './ScheduleModal.css'
+import styles from './ScheduleModal.module.css'
  
 const SCHEDULES: { id: ScheduleInterval; icon: string; name: string; desc: string }[] = [
   { id: 'daily',       icon: '💧', name: 'Every day',        desc: 'Shower every 24 hours'  },
