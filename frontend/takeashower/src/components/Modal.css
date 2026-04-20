@@ -1,0 +1,77 @@
+/* Modal.module.css
+ *
+ * CSS Modules are scoped to a single component — class names are auto-renamed
+ * to something like "Modal_backdrop__xK3z" at build time. This means you can
+ * use simple names like `.backdrop` here without worrying about collisions with
+ * other files that might also have a `.backdrop` class. Vite supports this out
+ * of the box with any file named *.module.css.
+ */
+ 
+.backdrop {
+  /* Fixed positioning covers the entire viewport. */
+  position: fixed;
+  inset: 0; /* shorthand for top:0 right:0 bottom:0 left:0 */
+  background: rgba(58, 53, 48, 0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease;
+}
+ 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+ 
+.card {
+  background: #FDF9F4;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 20px;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease;
+}
+ 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+ 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+ 
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #3A3530;
+  letter-spacing: 0.02em;
+}
+ 
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #9B948E;
+  transition: background 0.15s;
+}
+ 
+.closeBtn:hover {
+  background: #F5F0EB;
+}
