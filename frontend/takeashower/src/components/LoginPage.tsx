@@ -25,7 +25,7 @@ import styles from './LoginPage.module.css'
 interface LoginPageProps {
   // Updated signature: we pass back both username AND their schedule
   // so App.tsx can initialize correctly without a second fetch
-  onLogin: (username: string, schedule: ScheduleInterval) => void
+    onLogin: (username: string, schedule: ScheduleInterval) => void
 }
  
 export function LoginPage({ onLogin }: LoginPageProps) {

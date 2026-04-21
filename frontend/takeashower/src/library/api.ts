@@ -26,9 +26,9 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
 // browser. The token is what proves to the backend that you're logged in.
  
 export const tokenStorage = {
-  get: () => localStorage.getItem('rinse_token'),
-  set: (token: string) => localStorage.setItem('rinse_token', token),
-  clear: () => localStorage.removeItem('rinse_token'),
+    get: () => localStorage.getItem('rinse_token'),
+    set: (token: string) => localStorage.setItem('rinse_token', token),
+    clear: () => localStorage.removeItem('rinse_token'),
 }
  
 // ── Base fetch helper ──────────────────────────────────────────────────────
