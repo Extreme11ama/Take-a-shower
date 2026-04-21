@@ -1,17 +1,6 @@
-// hooks/useTimer.ts
-//
-// This hook manages the shower timer — completely separate from the schedule
-// countdown. It handles start/pause/reset and ticks every second.
-//
-// Notice how none of this logic lives in a component. That separation is the
-// point: the component file just says "give me a timer" and uses what comes back.
- 
+
 import { useState, useEffect, useRef } from 'react'
 import { formatTimerSeconds } from '../library/utils'
- 
-// useRef is like useState but changing it does NOT trigger a re-render.
-// It's perfect for holding the interval ID — we need it to cancel the interval
-// but we never want to show it on screen.
  
 export function useTimer(initialMinutes: number = 10) {
   const [durationMins, setDurationMins] = useState(initialMinutes)
@@ -20,7 +9,6 @@ export function useTimer(initialMinutes: number = 10) {
   const [finished, setFinished] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
  
-  // Clear any running interval (helper used in multiple places below)
   function clearTimer() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current)
@@ -31,10 +19,6 @@ export function useTimer(initialMinutes: number = 10) {
   function start() {
     if (finished) return
     setRunning(true)
-    // We use setRemaining with a callback (prev => prev - 1) instead of reading
-    // the `remaining` variable directly. This is important: closures in setInterval
-    // capture the value of `remaining` at the time the interval was created, so
-    // reading it directly would always give you the original value, never the updated one.
     intervalRef.current = setInterval(() => {
       setRemaining(prev => {
         if (prev <= 1) {
@@ -73,7 +57,6 @@ export function useTimer(initialMinutes: number = 10) {
     setRemaining(mins * 60)
   }
  
-  // Cleanup on unmount — avoids memory leaks if the modal is closed while running
   useEffect(() => () => clearTimer(), [])
  
   const totalSeconds = durationMins * 60

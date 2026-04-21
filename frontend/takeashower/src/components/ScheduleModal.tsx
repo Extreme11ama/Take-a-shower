@@ -1,13 +1,3 @@
-// components/ScheduleModal.tsx
-//
-// Lets the user pick their shower schedule. Notice it has its OWN internal
-// "selectedSchedule" state for the highlighted option — but it only calls
-// onApply (which updates the parent's state) when you hit "Apply".
-//
-// This is intentional: if you changed the parent's schedule immediately on
-// every click, the countdown on the home screen would jump around while you're
-// still deciding. By keeping a local draft, the user can browse options and
-// only commit when ready.
  
 import { useState } from 'react'
 import { Modal } from './Modal'
@@ -28,11 +18,10 @@ interface ScheduleModalProps {
 }
  
 export function ScheduleModal({ open, onClose, current, onApply }: ScheduleModalProps) {
-  // Local draft state — initialized to whatever is currently active
   const [selected, setSelected] = useState<ScheduleInterval>(current)
  
   function handleApply() {
-    onApply(selected)  // push the chosen value up to the parent
+    onApply(selected)  
     onClose()
   }
  
@@ -40,8 +29,6 @@ export function ScheduleModal({ open, onClose, current, onApply }: ScheduleModal
     <Modal open={open} title="Schedule" onClose={onClose}>
       <div className={styles.options}>
         {SCHEDULES.map(s => (
-          // Each option is a button. We apply a `.selected` class when it
-          // matches the local draft, not the currently-active schedule.
           <button
             key={s.id}
             className={`${styles.option} ${selected === s.id ? styles.selected : ''}`}
@@ -52,7 +39,7 @@ export function ScheduleModal({ open, onClose, current, onApply }: ScheduleModal
               <span className={styles.name}>{s.name}</span>
               <span className={styles.desc}>{s.desc}</span>
             </div>
-            {/* The checkmark circle — filled only when selected */}
+        
             <div className={`${styles.check} ${selected === s.id ? styles.checkActive : ''}`}>
               {selected === s.id && '✓'}
             </div>
