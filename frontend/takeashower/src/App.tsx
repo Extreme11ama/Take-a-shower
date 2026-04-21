@@ -1,30 +1,3 @@
-// App.tsx
-//
-// This is the root of your React app. Its job is to:
-//   1. Own all "global" state (who's logged in, what schedule is set, overrides)
-//   2. Decide which screen to show (login vs main app)
-//   3. Render the modals and pass them the right props
-//
-// The concept here is called "lifting state up". Any data that two or more
-// components need to share lives here, at the closest common ancestor.
-// Data flows DOWN via props. Changes flow UP via callback functions (onX props).
-//
-// In a bigger app you'd use a state manager like Zustand or React Context for
-// this — but for a project this size, plain useState in App.tsx is totally fine.
- 
-// App.tsx — updated with real API calls
-//
-// The structure is exactly the same as before. The only things that changed
-// are the three functions that used to have TODO comments:
-//   handleLogin()    → now calls api.profile.get() to load real settings
-//   handleToggleDay() → now calls api.overrides.set() to save to the DB
-//   handleApplySchedule() → now calls api.profile.update() to save to the DB
-//
-// We also added:
-//   - tokenStorage check on startup (so you stay logged in after refresh)
-//   - loading state so the app doesn't flash the login screen on refresh
-//   - error handling with try/catch around every API call
- 
 import { useState, useEffect, useCallback } from 'react'
 import { LoginPage } from './components/LoginPage'
 import { CalendarModal } from './components/CalendarModal'
@@ -44,13 +17,8 @@ export default function App() {
   const [activeModal, setActiveModal] = useState<ModalName>(null)
   const [overrides, setOverrides] = useState<Map<string, boolean>>(new Map())
  
-  // NEW: loading state prevents a flash of the login screen on page refresh
-  // while we're checking if a token exists and loading the profile
   const [loading, setLoading] = useState(true)
  
-  // ── On page load: check if user is already logged in ─────────────────────
-  // If there's a stored token, fetch the profile immediately so the user
-  // doesn't have to log in again every time they refresh the page.
   useEffect(() => {
     async function restoreSession() {
       const token = tokenStorage.get()
@@ -65,22 +33,17 @@ export default function App() {
         setSchedule(userProfile.schedule_interval)
         await loadOverrides()
       } catch {
-        // Token was expired or invalid — clear it and show login
         tokenStorage.clear()
       } finally {
-        // Always set loading to false so the app renders something
         setLoading(false)
       }
     }
  
     restoreSession()
-  }, []) // empty array = run once on mount only
+  }, []) 
  
-  // Helper to load overrides from the DB and convert to a Map
   async function loadOverrides() {
     const data = await overridesApi.getAll()
-    // data looks like { "2025-04-17": true, "2025-04-20": false }
-    // We convert it to a Map for fast lookups
     setOverrides(new Map(Object.entries(data)))
   }
  
@@ -97,9 +60,6 @@ export default function App() {
   // ── Handlers ─────────────────────────────────────────────────────────────
  
   async function handleLogin(username: string, scheduleFromServer: ScheduleInterval) {
-    // Login already happened in LoginPage.tsx (it calls auth.login()).
-    // By the time this runs, the token is already stored.
-    // We just update the UI state here.
     setUser(username)
     setSchedule(scheduleFromServer)
     await loadOverrides()
