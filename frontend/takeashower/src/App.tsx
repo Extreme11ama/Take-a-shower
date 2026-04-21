@@ -77,9 +77,6 @@ export default function App() {
   }
  
   const handleToggleDay = useCallback(async (key: string) => {
-    // 1. Update UI immediately (optimistic update)
-    //    The user sees the change instantly without waiting for the server.
-    //    If the server call fails, we roll back.
     const newValue = !showerDays.has(key)
  
     setOverrides(prev => {
@@ -88,12 +85,10 @@ export default function App() {
       return next
     })
  
-    // 2. Save to the database in the background
     try {
       await overridesApi.set(key, newValue)
     } catch (err) {
       console.error('Failed to save override:', err)
-      // Roll back the optimistic update if the save failed
       setOverrides(prev => {
         const next = new Map(prev)
         next.delete(key)
@@ -103,11 +98,9 @@ export default function App() {
   }, [showerDays])
  
   async function handleApplySchedule(s: ScheduleInterval) {
-    // Update UI immediately
     setSchedule(s)
-    setOverrides(new Map()) // clear overrides when schedule changes
+    setOverrides(new Map()) 
  
-    // Save to DB
     try {
       await profile.update({ schedule_interval: s })
     } catch (err) {
@@ -117,7 +110,6 @@ export default function App() {
  
   // ── Render ────────────────────────────────────────────────────────────────
  
-  // Show nothing while checking the stored token on startup
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
