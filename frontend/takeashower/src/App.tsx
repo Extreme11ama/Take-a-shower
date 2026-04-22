@@ -7,6 +7,9 @@ import { useCountdown } from './hooks/useCountdown'
 import type { ScheduleInterval } from './types'
 import { getGreeting, toDateKey, getToday } from './library/utils'
 import { auth, profile, overrides as overridesApi, tokenStorage } from './library/api'
+import { MdCalendarMonth } from "react-icons/md"
+import { BsClock } from "react-icons/bs"
+import { FaStopwatch } from "react-icons/fa"
 import './App.css'
  
 type ModalName = 'calendar' | 'schedule' | 'timer' | null
@@ -16,6 +19,7 @@ export default function App() {
   const [schedule, setSchedule] = useState<ScheduleInterval>('daily')
   const [activeModal, setActiveModal] = useState<ModalName>(null)
   const [overrides, setOverrides] = useState<Map<string, boolean>>(new Map())
+  const [showerTime, setShowerTime] = useState('20:00')
  
   const [loading, setLoading] = useState(true)
  
@@ -55,13 +59,15 @@ export default function App() {
     nextShowerDate,
     showerDays,
     streak,
-  } = useCountdown({ schedule, overrides })
+  } = useCountdown({ schedule, overrides, showerTime })
  
   // ── Handlers ─────────────────────────────────────────────────────────────
  
   async function handleLogin(username: string, scheduleFromServer: ScheduleInterval) {
     setUser(username)
     setSchedule(scheduleFromServer)
+    const p = await profile.get()
+    setShowerTime(p.shower_time)
     await loadOverrides()
   }
  
@@ -97,12 +103,13 @@ export default function App() {
     }
   }, [showerDays])
  
-  async function handleApplySchedule(s: ScheduleInterval) {
+  async function handleApplySchedule(s: ScheduleInterval, time: string) {
     setSchedule(s)
+    setShowerTime(time)
     setOverrides(new Map()) 
  
     try {
-      await profile.update({ schedule_interval: s })
+      await profile.update({ schedule_interval: s, shower_time: time })
     } catch (err) {
       console.error('Failed to save schedule:', err)
     }
@@ -139,6 +146,7 @@ export default function App() {
         <div className="app-logo">Rinse<span className="logo-dot">.</span></div>
         <div className="header-actions">
           <div className="icon-buttons">
+            {/*
             {([
               { name: 'calendar' as ModalName, emoji: '📅', label: 'Calendar' },
               { name: 'schedule' as ModalName, emoji: '🗓', label: 'Schedule' },
@@ -153,7 +161,19 @@ export default function App() {
                 <span className="icon-emoji">{btn.emoji}</span>
                 <span className="icon-label">{btn.label}</span>
               </button>
-            ))}
+            ))}*/}
+            <button className={`icon-btn ${activeModal === 'calendar' ? 'active' : ''}`} onClick={() => setActiveModal('calendar')} aria-label="Calendar">
+            <MdCalendarMonth size={18} color="#8BAE8A" />
+            <span className="icon-label">Calendar</span>
+            </button>
+            <button className={`icon-btn ${activeModal === 'schedule' ? 'active' : ''}`} onClick={() => setActiveModal('schedule')} aria-label="Schedule">
+            <BsClock size={18} color="#B5A89A" />
+            <span className="icon-label">Schedule</span>
+            </button>
+            <button className={`icon-btn ${activeModal === 'timer' ? 'active' : ''}`} onClick={() => setActiveModal('timer')} aria-label="Timer">
+            <FaStopwatch size={18} color="#7FA8A0" />
+            <span className="icon-label">Timer</span>
+            </button>
           </div>
           <button className="user-chip" onClick={handleLogout} title="Sign out">
             <div className="avatar">{user[0].toUpperCase()}</div>
@@ -216,6 +236,7 @@ export default function App() {
         open={activeModal === 'schedule'}
         onClose={() => setActiveModal(null)}
         current={schedule}
+        currentTime={showerTime} 
         onApply={handleApplySchedule}
       />
       <TimerModal

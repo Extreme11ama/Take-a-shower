@@ -101,3 +101,38 @@
 .applyBtn:hover {
   background: #7A9E79;
 }
+
+.timeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  border: 1.5px solid rgba(181, 168, 154, 0.3);
+  border-radius: 14px;
+  margin-top: 10px;
+}
+
+.timeLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: #3A3530;
+}
+
+.timeInput {
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: #3A3530;
+  background: #FAF7F2;
+  outline: none;
+}
+
+.timeInput:focus {
+  border-color: #8BAE8A;
+}
+
+.timeInput::-webkit-calendar-picker-indicator {
+  filter: invert(0.4);
+}

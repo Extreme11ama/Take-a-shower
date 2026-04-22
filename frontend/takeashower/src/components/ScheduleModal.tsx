@@ -14,14 +14,17 @@ interface ScheduleModalProps {
   open: boolean
   onClose: () => void
   current: ScheduleInterval       // the active schedule (from parent state)
-  onApply: (s: ScheduleInterval) => void  // called when user confirms
+  onApply: (s: ScheduleInterval, time: string) => void  // called when user confirms
+  currentTime: string   
 }
  
-export function ScheduleModal({ open, onClose, current, onApply }: ScheduleModalProps) {
+export function ScheduleModal({ open, onClose, current, onApply, currentTime }: ScheduleModalProps) {
   const [selected, setSelected] = useState<ScheduleInterval>(current)
+  const [selectedTime, setSelectedTime] = useState(currentTime)
+
  
   function handleApply() {
-    onApply(selected)  
+    onApply(selected, selectedTime)  
     onClose()
   }
  
@@ -46,6 +49,16 @@ export function ScheduleModal({ open, onClose, current, onApply }: ScheduleModal
           </button>
         ))}
       </div>
+
+        <div className={styles.timeRow}>
+            <span className={styles.timeLabel}>Shower time</span>
+            <input
+                type="time"
+                className={styles.timeInput}
+                value={selectedTime}
+                onChange={e => setSelectedTime(e.target.value)}
+            />
+        </div>
  
       <button className={styles.applyBtn} onClick={handleApply}>
         Apply schedule
