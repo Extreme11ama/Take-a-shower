@@ -6,12 +6,11 @@ interface ModalProps {
   open: boolean
   title: string
   onClose: () => void
-  // `children` is a special React prop — it represents whatever JSX is nested
-  // inside your component when you use it. Type ReactNode covers any valid JSX.
   children: React.ReactNode
+  backdropClassName?: string 
 }
  
-export function Modal({ open, title, onClose, children }: ModalProps) {
+export function Modal({ open, title, onClose, children, backdropClassName }: ModalProps) {
   useEffect(() => {
     if (!open) return
     function handleKey(e: KeyboardEvent) {
@@ -25,7 +24,8 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
  
   return (
     <div
-      className={styles.backdrop}
+      //className={styles.backdrop}
+      className={`${styles.backdrop} ${backdropClassName ?? ''}`}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div className={styles.card}>

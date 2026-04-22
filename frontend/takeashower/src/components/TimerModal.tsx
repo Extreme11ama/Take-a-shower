@@ -23,13 +23,13 @@ export function TimerModal({ open, onClose }: TimerModalProps) {
   const dashoffset = CIRCUMFERENCE * (1 - progress)
  
   return (
-    <Modal open={open} title="Shower timer" onClose={onClose}>
+    <Modal open={open} title="Shower timer" onClose={onClose} backdropClassName={running ? styles.backdropDark : ''}>
       {/* The ring clock */}
       <div className={styles.ringWrap}>
-        <div className={styles.ringContainer}>
+        <div className={`${styles.ringContainer} ${running ? styles.ringLarge : ''}`}>
           <svg
-            width="180"
-            height="180"
+            width="100%"
+            height="100%"
             viewBox="0 0 180 180"
             style={{ position: 'absolute', top: 0, left: 0, transform: 'rotate(-90deg)' }}
           >

@@ -184,7 +184,7 @@ export default function App() {
           </svg>
           <div className="ring-inner">
             <p className="ring-label">remaining</p>
-            <div className="ring-time">{countdownText}</div>
+            <div className="ring-time" style={{ fontSize: countdownText.length > 6 ? '34px' : undefined }}>{countdownText}</div>
             <p className="ring-sub">{scheduleLabels[schedule]}</p>
           </div>
         </div>

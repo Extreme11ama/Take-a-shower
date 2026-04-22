@@ -3,6 +3,7 @@
 .ringWrap {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 0.5rem 0 1.5rem;
 }
 
@@ -10,6 +11,7 @@
   position: relative;
   width: 180px;
   height: 180px;
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 .ringInner {
@@ -107,4 +109,14 @@
 
 .resetBtn:hover {
   background: #F5F0EB;
+}
+
+.ringLarge {
+  width: 260px;
+  height: 260px;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.backdropDark {
+  background: rgba(20, 18, 16, 0.88);
 }
