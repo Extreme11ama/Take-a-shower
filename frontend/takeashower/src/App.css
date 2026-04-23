@@ -255,4 +255,58 @@ body {
 .streak-cell.is-today {
   background: #C8DCC7;
 }
+
+.user-menu-wrap {
+  position: relative;
+}
+
+.user-chip-caret {
+  font-size: 8px;
+  color: #9B948E;
+  margin-left: 2px;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #FDF9F4;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 12px;
+  padding: 0.5rem;
+  min-width: 140px;
+  z-index: 50;
+  animation: slideUp 0.15s ease;
+}
+
+.user-dropdown-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3A3530;
+  padding: 0.35rem 0.5rem;
+}
+
+.user-dropdown-divider {
+  border: none;
+  border-top: 1px solid rgba(181, 168, 154, 0.3);
+  margin: 0.35rem 0;
+}
+
+.user-dropdown-signout {
+  width: 100%;
+  padding: 0.45rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #C04828;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.user-dropdown-signout:hover {
+  background: #FCEBEB;
+}
  

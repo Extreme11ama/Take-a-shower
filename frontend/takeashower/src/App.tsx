@@ -20,6 +20,7 @@ export default function App() {
   const [activeModal, setActiveModal] = useState<ModalName>(null)
   const [overrides, setOverrides] = useState<Map<string, boolean>>(new Map())
   const [showerTime, setShowerTime] = useState('20:00')
+  const [showUserMenu, setShowUserMenu] = useState(false)
  
   const [loading, setLoading] = useState(true)
  
@@ -35,6 +36,7 @@ export default function App() {
         const userProfile = await profile.get()
         setUser(userProfile.username)
         setSchedule(userProfile.schedule_interval)
+        setShowerTime(userProfile.shower_time)
         await loadOverrides()
       } catch {
         tokenStorage.clear()
@@ -45,6 +47,17 @@ export default function App() {
  
     restoreSession()
   }, []) 
+
+  useEffect(() => {
+  function handleClickOutside(e: MouseEvent) {
+    const wrap = document.querySelector('.user-menu-wrap')
+    if (wrap && !wrap.contains(e.target as Node)) {
+      setShowUserMenu(false)
+    }
+  }
+  document.addEventListener('mousedown', handleClickOutside)
+  return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
  
   async function loadOverrides() {
     const data = await overridesApi.getAll()
@@ -175,10 +188,30 @@ export default function App() {
             <span className="icon-label">Timer</span>
             </button>
           </div>
-          <button className="user-chip" onClick={handleLogout} title="Sign out">
+          {/*<button className="user-chip" onClick={handleLogout} title="Sign out">
             <div className="avatar">{user[0].toUpperCase()}</div>
             <span>{user}</span>
+          </button>*/}
+          <div className="user-menu-wrap">
+          <button className="user-chip" onClick={() => setShowUserMenu(prev => !prev)}>
+            <div className="avatar">{user[0].toUpperCase()}</div>
+            <span>{user}</span>
+            <span className="user-chip-caret">{showUserMenu ? '▲' : '▼'}</span>
           </button>
+
+          {showUserMenu && (
+            <div className="user-dropdown">
+              <div className="user-dropdown-name">{user}</div>
+              <hr className="user-dropdown-divider" />
+              <button
+                className="user-dropdown-signout"
+                onClick={() => { setShowUserMenu(false); handleLogout() }}
+              >
+                Sign out
+              </button>
+            </div>
+          )}
+        </div>
         </div>
       </header>
  

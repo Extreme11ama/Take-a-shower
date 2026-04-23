@@ -52,25 +52,21 @@ export function getNextShowerDate(
   showerTime: string = '20:00' ): Date | null { // HH:MM
   const now = new Date()
   const today = getToday()
-  const todayKey = toDateKey(today)
   const [prefHour, prefMin] = showerTime.split(':').map(Number)
  
   for (let i = 0; i < 10; i++) {
     const d = new Date(today)
     d.setDate(d.getDate() + i)
     const key = toDateKey(d)
- 
+
     if (!showerDays.has(key)) continue
- 
-    if (i === 0) {
-      const target = new Date(today)
-      target.setHours(prefHour, prefMin, 0, 0)
-      if (target > now) return target
-    } else {
-      const target = new Date(d)
-      target.setHours(8, 0, 0, 0)
-      return target
-    }
+
+    const target = new Date(d)
+    target.setHours(prefHour, prefMin, 0, 0)  
+
+    if (i === 0 && target <= now) continue
+
+    return target
   }
  
   return null 
