@@ -223,13 +223,13 @@ export default function App() {
  
         <div className="ring-container">
           <svg
-            width="220" height="220" viewBox="0 0 220 220"
+            width="300" height="300" viewBox="0 0 300 300"
             style={{ position: 'absolute', top: 0, left: 0, transform: 'rotate(-90deg)' }}
           >
-            <circle cx="110" cy="110" r="90" fill="none" stroke="rgba(200,220,199,0.25)" strokeWidth="12" />
+            <circle cx="150" cy="150" r="130" fill="none" stroke="rgba(200,220,199,0.25)" strokeWidth="14" />
             <circle
-              cx="110" cy="110" r="90"
-              fill="none" stroke="#8BAE8A" strokeWidth="12" strokeLinecap="round"
+              cx="150" cy="150" r="130"
+              fill="none" stroke="#8BAE8A" strokeWidth="14" strokeLinecap="round"
               strokeDasharray={ringCircumference}
               strokeDashoffset={ringDashoffset}
               style={{ transition: 'stroke-dashoffset 1s linear' }}
@@ -237,7 +237,7 @@ export default function App() {
           </svg>
           <div className="ring-inner">
             <p className="ring-label">remaining</p>
-            <div className="ring-time" style={{ fontSize: countdownText.length > 6 ? '34px' : undefined }}>{countdownText}</div>
+            <div className="ring-time" style={{ fontSize: countdownText.length > 6 ? '44px' : undefined }}>{countdownText}</div>
             <p className="ring-sub">{scheduleLabels[schedule]}</p>
           </div>
         </div>

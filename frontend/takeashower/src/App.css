@@ -26,7 +26,7 @@ body {
 .app-header {
   background: #FDF9F4;
   border-bottom: 1px solid rgba(181, 168, 154, 0.3);
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,7 +35,7 @@ body {
  
 .app-logo {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 300;
   letter-spacing: 0.05em;
   color: #3A3530;
@@ -101,7 +101,7 @@ body {
   border-radius: 20px;
   background: transparent;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   color: #6B6460;
   font-family: 'DM Sans', sans-serif;
   transition: background 0.15s;
@@ -134,7 +134,7 @@ body {
   justify-content: center;
   padding: 4rem 2rem 3rem;
   text-align: center;
-  gap: 2.5rem;
+  gap: 3.5rem;
 }
  
 .greeting-block {
@@ -152,7 +152,7 @@ body {
  
 .main-heading {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 38px;
+  font-size: 52px;
   font-weight: 300;
   color: #3A3530;
   line-height: 1.1;
@@ -161,8 +161,10 @@ body {
 /* ── Countdown ring ── */
 .ring-container {
   position: relative;
-  width: 220px;
-  height: 220px;
+  /*width: 220px;
+  height: 220px;*/
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,7 +190,7 @@ body {
  
 .ring-time {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 52px;
+  font-size: 64px;
   font-weight: 300;
   color: #3A3530;
   line-height: 1;
@@ -216,7 +218,7 @@ body {
   background: #EEF4ED;
   border: 1px solid rgba(139, 174, 138, 0.25);
   border-radius: 20px;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.25rem;
   font-size: 13px;
   color: #6B6460;
 }
@@ -230,7 +232,7 @@ body {
 }
  
 .streak-heading {
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: 0.05em;
   color: #9B948E;
 }
@@ -242,8 +244,8 @@ body {
 }
  
 .streak-cell {
-  width: 28px;
-  height: 8px;
+  width: 36px;
+  height: 10px;
   border-radius: 4px;
   background: #DDD4CB;
 }
@@ -261,7 +263,7 @@ body {
 }
 
 .user-chip-caret {
-  font-size: 8px;
+  font-size: 15px;
   color: #9B948E;
   margin-left: 2px;
 }
@@ -280,7 +282,7 @@ body {
 }
 
 .user-dropdown-name {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: #3A3530;
   padding: 0.35rem 0.5rem;

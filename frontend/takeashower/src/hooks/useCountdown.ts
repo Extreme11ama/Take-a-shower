@@ -10,7 +10,7 @@ import {
   getToday,
 } from '../library/utils'
  
-const RING_RADIUS = 90
+const RING_RADIUS = 130
 const CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS
 
 const INTERVAL_DAYS: Record<ScheduleInterval, number> = {
