@@ -5,7 +5,7 @@ import { ScheduleModal } from './components/ScheduleModal'
 import { TimerModal } from './components/TimerModal'
 import { useCountdown } from './hooks/useCountdown'
 import type { ScheduleInterval } from './types'
-import { getGreeting, toDateKey, getToday } from './library/utils'
+import { getGreeting, toDateKey, getToday, buildShowerDays } from './library/utils'
 import { auth, profile, overrides as overridesApi, tokenStorage } from './library/api'
 import { MdCalendarMonth } from "react-icons/md"
 import { BsClock } from "react-icons/bs"
@@ -96,14 +96,32 @@ export default function App() {
   }
  
   const handleToggleDay = useCallback(async (key: string) => {
-    const newValue = !showerDays.has(key)
- 
+  const baseScheduleDays = buildShowerDays(schedule, new Map())
+  const scheduleDefault = baseScheduleDays.has(key)
+
+  const currentValue = overrides.has(key)
+    ? overrides.get(key)!
+    : scheduleDefault
+
+  const newValue = !currentValue
+
+  if (newValue === scheduleDefault) {
+    setOverrides(prev => {
+      const next = new Map(prev)
+      next.delete(key)
+      return next
+    })
+    try {
+      await overridesApi.remove(key)  // DELETE /overrides/date
+    } catch (err) {
+      console.error('Failed to remove override:', err)
+    }
+  } else {
     setOverrides(prev => {
       const next = new Map(prev)
       next.set(key, newValue)
       return next
     })
- 
     try {
       await overridesApi.set(key, newValue)
     } catch (err) {
@@ -114,7 +132,8 @@ export default function App() {
         return next
       })
     }
-  }, [showerDays])
+  }
+}, [schedule, overrides, showerDays])
  
   async function handleApplySchedule(s: ScheduleInterval, time: string) {
     setSchedule(s)
@@ -122,7 +141,10 @@ export default function App() {
     setOverrides(new Map()) 
  
     try {
-      await profile.update({ schedule_interval: s, shower_time: time })
+      await Promise.all([
+        overridesApi.clearAll(),
+        profile.update({ schedule_interval: s, shower_time: time })
+      ])
     } catch (err) {
       console.error('Failed to save schedule:', err)
     }

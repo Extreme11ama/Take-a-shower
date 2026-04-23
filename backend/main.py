@@ -173,6 +173,11 @@ def set_override(body: OverrideRequest, user_id: str = Depends(get_current_user)
 def delete_override(date: str, user_id: str = Depends(get_current_user)):
     supabase.table("shower_overrides").delete().eq("user_id", user_id).eq("date", date).execute()
     return { "message": "Override removed" }
+
+@app.delete("/overrides")
+def clear_overrides(user_id: str = Depends(get_current_user)):
+    supabase.table("shower_overrides").delete().eq("user_id", user_id).execute()
+    return { "message": "All overrides cleared" }
  
 
 

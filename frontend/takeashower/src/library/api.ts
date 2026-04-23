@@ -98,6 +98,10 @@ export const overrides = {
   async remove(date: string) {
     return request(`/overrides/${date}`, { method: 'DELETE' })
   },
+
+  async clearAll() {
+    return request('/overrides', { method: 'DELETE' })
+  },
 }
  
 // ── Shower log API calls ───────────────────────────────────────────────────
