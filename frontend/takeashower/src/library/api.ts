@@ -118,3 +118,22 @@ export const showerLog = {
     return request('/log')
   },
 }
+
+// ── Shower notes API calls ─────────────────────────────────────────────────
+
+export const notes = {
+  async getAll(): Promise<Record<string, string>> {
+    return request<Record<string, string>>('/notes')
+  },
+
+  async save(date: string, note: string) {
+    return request('/notes', {
+      method: 'POST',
+      body: JSON.stringify({ date, note }),
+    })
+  },
+
+  async remove(date: string) {
+    return request(`/notes/${date}`, { method: 'DELETE' })
+  },
+}

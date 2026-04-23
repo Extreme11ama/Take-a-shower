@@ -11,9 +11,11 @@ interface CalendarModalProps {
   onClose: () => void
   showerDays: Set<string>        // which days are scheduled
   onToggleDay: (key: string) => void  // called when user clicks a day
+  notes: Record<string, string>                        // ← new
+  onSaveNote: (date: string, note: string) => void
 }
  
-export function CalendarModal({ open, onClose, showerDays, onToggleDay }: CalendarModalProps) {
+export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, onSaveNote }: CalendarModalProps) {
   const [viewDate, setViewDate] = useState(() => {
     const d = new Date()
     d.setDate(1) 
@@ -37,6 +39,28 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay }: Calend
   const daysInMonth = new Date(year, month + 1, 0).getDate() // day 0 of next month = last day of this month
  
   const monthLabel = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+
+    // new state for the note popover
+  const [notePopover, setNotePopover] = useState<{ date: string; label: string } | null>(null)
+  const [noteText, setNoteText] = useState('')
+
+  function handleRightClick(e: React.MouseEvent, key: string, label: string) {
+    e.preventDefault()  // stops the browser's default right-click menu
+    setNotePopover({ date: key, label })
+    setNoteText(notes[key] ?? '')  // load existing note if there is one
+  }
+
+  function handleSave() {
+    if (!notePopover) return
+    onSaveNote(notePopover.date, noteText)
+    setNotePopover(null)
+  }
+
+  function handleDelete() {
+    if (!notePopover) return
+    onSaveNote(notePopover.date, '')  // empty string triggers delete
+    setNotePopover(null)
+  }
  
   return (
     <Modal open={open} title="Calendar" onClose={onClose}>
@@ -75,8 +99,10 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay }: Calend
               key={key}
               className={classes}
               onClick={isPast ? undefined : () => onToggleDay(key)}
+              onContextMenu={isPast ? undefined : (e) => handleRightClick(e, key, `${monthLabel} ${dayNum}`)}
             >
               {dayNum}
+              {notes[key] && <div className={styles.noteDot} />}
             </div>
           )
         })}
@@ -91,7 +117,34 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay }: Calend
           <div className={styles.legendDotStone} />
           Today
         </div>
+        <div className={styles.legendItem}>
+          <div className={styles.legendDotNote} />
+          Note
+        </div>
       </div>
+
+      {notePopover && (
+        <div className={styles.notePopover}>
+          <div className={styles.notePopoverHeader}>
+            <span className={styles.notePopoverDate}>{notePopover.label}</span>
+            <button className={styles.notePopoverClose} onClick={() => setNotePopover(null)}>✕</button>
+          </div>
+          <textarea
+            className={styles.noteTextarea}
+            placeholder="What did you do in this shower?"
+            value={noteText}
+            onChange={e => setNoteText(e.target.value)}
+            autoFocus
+            rows={4}
+          />
+          <div className={styles.noteActions}>
+            {notes[notePopover.date] && (
+              <button className={styles.noteDeleteBtn} onClick={handleDelete}>Delete</button>
+            )}
+            <button className={styles.noteSaveBtn} onClick={handleSave}>Save</button>
+          </div>
+        </div>
+      )}
     </Modal>
   )
 }

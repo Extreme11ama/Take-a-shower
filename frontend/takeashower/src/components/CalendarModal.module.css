@@ -60,6 +60,7 @@
   cursor: pointer;
   color: #6B6460;
   transition: background 0.15s;
+  position: relative;  
 }
  
 .cell:hover:not(.past):not(.showerDay) {
@@ -133,3 +134,105 @@
   background: #B5A89A;
   opacity: 0.6;
 }
+
+.noteDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #287ec0;
+  position: absolute;
+  top: 5px; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.legendDotNote {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3d86bd;
+}
+
+.notePopover {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #F5F0EB;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.notePopoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notePopoverDate {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3A3530;
+  letter-spacing: 0.03em;
+}
+
+.notePopoverClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  color: #9B948E;
+}
+
+.noteTextarea {
+  width: 100%;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #3A3530;
+  background: #FDF9F4;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+}
+
+.noteTextarea:focus {
+  border-color: #8BAE8A;
+}
+
+.noteActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.noteSaveBtn {
+  padding: 0.45rem 1rem;
+  background: #8BAE8A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.noteSaveBtn:hover { background: #7A9E79; }
+
+.noteDeleteBtn {
+  padding: 0.45rem 1rem;
+  background: transparent;
+  color: #C04828;
+  border: 1px solid rgba(192, 72, 40, 0.3);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.noteDeleteBtn:hover { background: #FCEBEB; }

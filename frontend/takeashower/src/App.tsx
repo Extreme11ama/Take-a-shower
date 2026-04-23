@@ -6,7 +6,7 @@ import { TimerModal } from './components/TimerModal'
 import { useCountdown } from './hooks/useCountdown'
 import type { ScheduleInterval } from './types'
 import { getGreeting, toDateKey, getToday, buildShowerDays } from './library/utils'
-import { auth, profile, overrides as overridesApi, tokenStorage } from './library/api'
+import { auth, profile, overrides as overridesApi, tokenStorage, notes } from './library/api'
 import { MdCalendarMonth } from "react-icons/md"
 import { BsClock } from "react-icons/bs"
 import { FaStopwatch } from "react-icons/fa"
@@ -21,6 +21,7 @@ export default function App() {
   const [overrides, setOverrides] = useState<Map<string, boolean>>(new Map())
   const [showerTime, setShowerTime] = useState('20:00')
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [showerNotes, setShowerNotes] = useState<Record<string, string>>({})
  
   const [loading, setLoading] = useState(true)
  
@@ -33,10 +34,15 @@ export default function App() {
       }
  
       try {
-        const userProfile = await profile.get()
+        const [userProfile, notesData] = await Promise.all([
+          profile.get(),
+          notes.getAll()         // ← add this
+        ])
+        //const userProfile = await profile.get()
         setUser(userProfile.username)
         setSchedule(userProfile.schedule_interval)
         setShowerTime(userProfile.shower_time)
+        setShowerNotes(notesData)
         await loadOverrides()
       } catch {
         tokenStorage.clear()
@@ -79,8 +85,12 @@ export default function App() {
   async function handleLogin(username: string, scheduleFromServer: ScheduleInterval) {
     setUser(username)
     setSchedule(scheduleFromServer)
-    const p = await profile.get()
+    const [p, notesData] = await Promise.all([
+      profile.get(),
+      notes.getAll()
+    ])
     setShowerTime(p.shower_time)
+    setShowerNotes(notesData)
     await loadOverrides()
   }
  
@@ -93,6 +103,7 @@ export default function App() {
     setUser(null)
     setSchedule('daily')
     setOverrides(new Map())
+    setShowerNotes({})
   }
  
   const handleToggleDay = useCallback(async (key: string) => {
@@ -147,6 +158,28 @@ export default function App() {
       ])
     } catch (err) {
       console.error('Failed to save schedule:', err)
+    }
+  }
+
+  async function handleSaveNote(date: string, note: string) {
+    if (note.trim()) {
+      setShowerNotes(prev => ({ ...prev, [date]: note }))
+      try {
+        await notes.save(date, note)
+      } catch (err) {
+        console.error('Failed to save note:', err)
+      }
+    } else {
+      setShowerNotes(prev => {
+        const next = { ...prev }
+        delete next[date]
+        return next
+      })
+      try {
+        await notes.remove(date)
+      } catch (err) {
+        console.error('Failed to delete note:', err)
+      }
     }
   }
  
@@ -286,6 +319,8 @@ export default function App() {
         onClose={() => setActiveModal(null)}
         showerDays={showerDays}
         onToggleDay={handleToggleDay}
+        notes={showerNotes}          
+        onSaveNote={handleSaveNote}
       />
       <ScheduleModal
         open={activeModal === 'schedule'}

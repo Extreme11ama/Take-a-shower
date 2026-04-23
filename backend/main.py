@@ -35,6 +35,10 @@ class OverrideRequest(BaseModel):
     date: str           # YYYY-MM-DD
     is_shower_day: bool
 
+class NoteRequest(BaseModel):
+    date: str
+    note: str
+
 
 
 async def get_current_user(authorization: str = Header(...)) -> str:
@@ -207,6 +211,31 @@ def get_shower_history(user_id: str = Depends(get_current_user)):
     )
  
     return response.data
+
+@app.get("/notes")
+def get_notes(user_id: str = Depends(get_current_user)):
+    response = (
+        supabase.table("shower_notes")
+        .select("date, note")
+        .eq("user_id", user_id)
+        .execute()
+    )
+    return { row["date"]: row["note"] for row in response.data }
+
+@app.post("/notes")
+def save_note(body: NoteRequest, user_id: str = Depends(get_current_user)):
+    supabase.table("shower_notes").upsert({
+        "user_id": user_id,
+        "date": body.date,
+        "note": body.note,
+        "updated_at": "now()",
+    }).execute()
+    return { "message": "Note saved" }
+
+@app.delete("/notes/{date}")
+def delete_note(date: str, user_id: str = Depends(get_current_user)):
+    supabase.table("shower_notes").delete().eq("user_id", user_id).eq("date", date).execute()
+    return { "message": "Note deleted" }
  
  
 # ── Health check ──────────────────────────────────────────────────────────────
