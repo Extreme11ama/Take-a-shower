@@ -1,5 +1,5 @@
 
-import type { ScheduleInterval, UserProfile, ShowerOverride } from '../types'
+import type { ScheduleInterval, UserProfile } from '../types'
  
 // Base URL switches automatically between local dev and production.
 // import.meta.env is Vite's way of reading environment variables.
