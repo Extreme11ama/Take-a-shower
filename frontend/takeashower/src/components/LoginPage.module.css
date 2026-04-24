@@ -7,6 +7,8 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  margin-left: calc(-50vw + 50%);  /* ← breaks out of the container */
+  width: 100vw;   
 }
 
 .card {
