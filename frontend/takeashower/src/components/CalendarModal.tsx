@@ -13,9 +13,11 @@ interface CalendarModalProps {
   onToggleDay: (key: string) => void  // called when user clicks a day
   notes: Record<string, string>                        // ← new
   onSaveNote: (date: string, note: string) => void
+  missedDays: Set<string>  // ← new
+  confirmedShowerDays: Set<string>
 }
  
-export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, onSaveNote }: CalendarModalProps) {
+export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, onSaveNote, missedDays, confirmedShowerDays }: CalendarModalProps) {
   const [viewDate, setViewDate] = useState(() => {
     const d = new Date()
     d.setDate(1) 
@@ -87,12 +89,14 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
           const isToday = key === todayKey
           const isShowerDay = showerDays.has(key)
           const dayLabel = viewDate.toLocaleDateString('en-US', { month: 'long' }) + ` ${dayNum}, ${year}`
+          const isMissed = missedDays.has(key)
  
           const classes = [
             styles.cell,
             isPast ? styles.past : '',
             isToday ? styles.today : '',
             isShowerDay ? styles.showerDay : '',
+            isMissed ? styles.missedDay : '',  // ← new
           ].filter(Boolean).join(' ')
  
           return (
@@ -100,7 +104,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
               key={key}
               className={classes}
               onClick={isPast ? undefined : () => onToggleDay(key)}
-              onContextMenu={isPast ? undefined : (e) => handleRightClick(e, key, dayLabel)}
+              onContextMenu={(e) => handleRightClick(e, key, dayLabel)}  // ← remove the isPast check
             >
               {dayNum}
               {notes[key] && <div className={styles.noteDot} />}
@@ -130,6 +134,15 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
             <span className={styles.notePopoverDate}>{notePopover.label}</span>
             <button className={styles.notePopoverClose} onClick={() => setNotePopover(null)}>✕</button>
           </div>
+
+          {confirmedShowerDays.has(notePopover.date) &&notePopover.date <= toDateKey(getToday()) && (
+            <button
+              className={`${styles.missedBtn} ${missedDays.has(notePopover.date) ? styles.missedActive : ''}`}
+              onClick={() => onToggleDay(notePopover.date)}
+            >
+            {missedDays.has(notePopover.date) ? '✓ Marked as missed' : 'Mark as missed'}
+            </button>
+          )}
           <textarea
             className={styles.noteTextarea}
             placeholder="What did you do in this shower?"

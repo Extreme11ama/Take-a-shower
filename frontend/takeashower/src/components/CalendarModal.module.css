@@ -69,8 +69,8 @@
  
 .past {
   opacity: 0.4;
-  cursor: default;
-  pointer-events: none;
+  cursor: context-menu;
+  /*pointer-events: none;*/
 }
  
 /* Today gets a small dot indicator underneath the number */
@@ -236,3 +236,32 @@
 }
 
 .noteDeleteBtn:hover { background: #FCEBEB; }
+
+.missedDay {
+  background: rgba(192, 72, 40, 0.15);
+  color: #C04828;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.missedBtn {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(192, 72, 40, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: #C04828;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.missedBtn:hover {
+  background: #FCEBEB;
+}
+
+.missedActive {
+  background: #FCEBEB;
+  border-color: #C04828;
+}

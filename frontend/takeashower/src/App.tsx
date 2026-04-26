@@ -27,6 +27,7 @@ export default function App() {
   const [toast, setToast] = useState<{ message: string; duration: number } | null>(null)
   const clearToast = useCallback(() => {setToast(null) 
     stopTimerSound() }, [])
+  const baseShowerDays = buildShowerDays(schedule, new Map())
  
   const [loading, setLoading] = useState(true)
  
@@ -226,6 +227,20 @@ export default function App() {
     ? (toDateKey(nextShowerDate) === toDateKey(getToday()) ? 'Today' : nextShowerDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }))
       + ' at ' + nextShowerDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
     : 'No shower scheduled'
+
+  const missedDays = new Set(
+  Array.from(overrides.entries())
+    .filter(([_, value]) => value === false)
+    .map(([key]) => key)
+  )
+
+    // days that are shower days ignoring missed overrides
+  const confirmedShowerDays = new Set([
+  ...Array.from(baseShowerDays),
+  ...Array.from(overrides.entries())
+    .filter(([_, v]) => v === true)
+    .map(([k]) => k)
+  ])
  
   const scheduleLabels: Record<ScheduleInterval, string> = {
     'daily': 'Every day',
@@ -346,6 +361,8 @@ export default function App() {
         onToggleDay={handleToggleDay}
         notes={showerNotes}          
         onSaveNote={handleSaveNote}
+        missedDays={missedDays}
+        confirmedShowerDays={confirmedShowerDays}
       />
       <ScheduleModal
         open={activeModal === 'schedule'}

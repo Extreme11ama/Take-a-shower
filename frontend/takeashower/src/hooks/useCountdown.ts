@@ -83,9 +83,19 @@ export function useCountdown({ schedule, overrides, showerTime = '20:00', onAler
   const streak = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(getToday())
     d.setDate(d.getDate() - (6 - i)) // go from 6 days ago up to today
+
+    const key = toDateKey(d)
+
+    // a day counts toward streak if:
+    // 1. it was a scheduled shower day
+    // 2. the user hasn't explicitly marked it as missed (override = false)
+    const wasScheduled = showerDays.has(key)
+    const markedMissed = overrides.get(key) === false
+    const counts = wasScheduled && !markedMissed
+
     return {
       key: toDateKey(d),
-      isShowerDay: showerDays.has(toDateKey(d)),
+      isShowerDay: counts,
       isToday: i === 6,
     }
   })
