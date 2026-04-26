@@ -10,6 +10,7 @@ import { auth, profile, overrides as overridesApi, tokenStorage, notes } from '.
 import { MdCalendarMonth } from "react-icons/md"
 import { BsClock } from "react-icons/bs"
 import { FaStopwatch } from "react-icons/fa"
+import { Toast } from './components/Toast'
 import './App.css'
  
 type ModalName = 'calendar' | 'schedule' | 'timer' | null
@@ -22,6 +23,8 @@ export default function App() {
   const [showerTime, setShowerTime] = useState('20:00')
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showerNotes, setShowerNotes] = useState<Record<string, string>>({})
+  const [toast, setToast] = useState<string | null>(null)
+  const clearToast = useCallback(() => setToast(null), [])
  
   const [loading, setLoading] = useState(true)
  
@@ -64,6 +67,18 @@ export default function App() {
   document.addEventListener('mousedown', handleClickOutside)
   return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  useEffect(() => {
+  function unlock() {
+    // create and immediately close an AudioContext on first click
+    // this "unlocks" audio for the rest of the session
+    const ctx = new AudioContext()
+    ctx.resume()
+    document.removeEventListener('click', unlock)
+  }
+  document.addEventListener('click', unlock)
+  return () => document.removeEventListener('click', unlock)
+}, [])
  
   async function loadOverrides() {
     const data = await overridesApi.getAll()
@@ -78,7 +93,7 @@ export default function App() {
     nextShowerDate,
     showerDays,
     streak,
-  } = useCountdown({ schedule, overrides, showerTime })
+  } = useCountdown({ schedule, overrides, showerTime, onAlert: showToast })
  
   // ── Handlers ─────────────────────────────────────────────────────────────
  
@@ -92,6 +107,9 @@ export default function App() {
     setShowerTime(p.shower_time)
     setShowerNotes(notesData)
     await loadOverrides()
+    if (Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
   }
  
   async function handleLogout() {
@@ -107,44 +125,44 @@ export default function App() {
   }
  
   const handleToggleDay = useCallback(async (key: string) => {
-  const baseScheduleDays = buildShowerDays(schedule, new Map())
-  const scheduleDefault = baseScheduleDays.has(key)
+    const baseScheduleDays = buildShowerDays(schedule, new Map())
+    const scheduleDefault = baseScheduleDays.has(key)
 
-  const currentValue = overrides.has(key)
-    ? overrides.get(key)!
-    : scheduleDefault
+    const currentValue = overrides.has(key)
+      ? overrides.get(key)!
+      : scheduleDefault
 
-  const newValue = !currentValue
+    const newValue = !currentValue
 
-  if (newValue === scheduleDefault) {
-    setOverrides(prev => {
-      const next = new Map(prev)
-      next.delete(key)
-      return next
-    })
-    try {
-      await overridesApi.remove(key)  // DELETE /overrides/date
-    } catch (err) {
-      console.error('Failed to remove override:', err)
-    }
-  } else {
-    setOverrides(prev => {
-      const next = new Map(prev)
-      next.set(key, newValue)
-      return next
-    })
-    try {
-      await overridesApi.set(key, newValue)
-    } catch (err) {
-      console.error('Failed to save override:', err)
+    if (newValue === scheduleDefault) {
       setOverrides(prev => {
         const next = new Map(prev)
         next.delete(key)
         return next
       })
+      try {
+        await overridesApi.remove(key)  // DELETE /overrides/date
+      } catch (err) {
+        console.error('Failed to remove override:', err)
+      }
+    } else {
+      setOverrides(prev => {
+        const next = new Map(prev)
+        next.set(key, newValue)
+        return next
+      })
+      try {
+        await overridesApi.set(key, newValue)
+      } catch (err) {
+        console.error('Failed to save override:', err)
+        setOverrides(prev => {
+          const next = new Map(prev)
+          next.delete(key)
+          return next
+        })
+      }
     }
-  }
-}, [schedule, overrides, showerDays])
+  }, [schedule, overrides, showerDays])
  
   async function handleApplySchedule(s: ScheduleInterval, time: string) {
     setSchedule(s)
@@ -182,6 +200,11 @@ export default function App() {
       }
     }
   }
+
+  function showToast(message: string) {
+    setToast(message)
+  }
+
  
   // ── Render ────────────────────────────────────────────────────────────────
  
@@ -332,7 +355,15 @@ export default function App() {
       <TimerModal
         open={activeModal === 'timer'}
         onClose={() => setActiveModal(null)}
+        onAlert={showToast}
       />
+      {toast && (
+        <Toast
+          message={toast}
+          //onDone={() => setToast(null)}
+          onDone={clearToast}
+        />
+      )}
     </div>
   )
 }

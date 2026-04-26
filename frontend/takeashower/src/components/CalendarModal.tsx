@@ -86,6 +86,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
           const isPast = date < today
           const isToday = key === todayKey
           const isShowerDay = showerDays.has(key)
+          const dayLabel = viewDate.toLocaleDateString('en-US', { month: 'long' }) + ` ${dayNum}, ${year}`
  
           const classes = [
             styles.cell,
@@ -99,7 +100,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
               key={key}
               className={classes}
               onClick={isPast ? undefined : () => onToggleDay(key)}
-              onContextMenu={isPast ? undefined : (e) => handleRightClick(e, key, `${monthLabel} ${dayNum}`)}
+              onContextMenu={isPast ? undefined : (e) => handleRightClick(e, key, dayLabel)}
             >
               {dayNum}
               {notes[key] && <div className={styles.noteDot} />}

@@ -2,6 +2,7 @@
 import { Modal } from './Modal'
 import { useTimer } from '../hooks/useTimer'
 import styles from './TimerModal.module.css'
+import { useState, useEffect } from 'react'
  
 const RADIUS = 70
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS // ≈ 439.8
@@ -11,9 +12,11 @@ const DURATIONS = [5, 10, 15, 20]
 interface TimerModalProps {
   open: boolean
   onClose: () => void
+  onAlert: (message: string) => void
 }
  
-export function TimerModal({ open, onClose }: TimerModalProps) {
+export function TimerModal({ open, onClose, onAlert }: TimerModalProps) {
+  const [customMins, setCustomMins] = useState('')
   const {
     running, finished, durationMins, displayText,
     progress, hint, startLabel,
@@ -21,6 +24,10 @@ export function TimerModal({ open, onClose }: TimerModalProps) {
   } = useTimer(10)
  
   const dashoffset = CIRCUMFERENCE * (1 - progress)
+
+  useEffect(() => {
+    if (finished) onAlert('Shower timer done!')
+  }, [finished])
  
   return (
     <Modal open={open} title="Shower timer" onClose={onClose} backdropClassName={running ? styles.backdropDark : ''}>
@@ -72,6 +79,29 @@ export function TimerModal({ open, onClose }: TimerModalProps) {
             {mins} min
           </button>
         ))}
+      </div>
+
+      <div className={styles.customRow}>
+        <input
+          type="number"
+          className={styles.customInput}
+          placeholder="Custom mins"
+          value={customMins}
+          min={1}
+          max={180}
+          onChange={e => setCustomMins(e.target.value)}
+        />
+        <button
+          className={styles.customBtn}
+          onClick={() => {
+            const mins = parseInt(customMins)
+            if (!mins || mins < 1) return
+            setDuration(mins)
+            setCustomMins('')
+          }}
+        >
+          Set
+        </button>
       </div>
  
       <div className={styles.controls}>

@@ -1,6 +1,7 @@
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { ScheduleInterval } from '../types'
+import { playDoneSound, sendNotification } from './audio'
 import {
   buildShowerDays,
   getNextShowerDate,
@@ -23,14 +24,17 @@ interface UseCountdownOptions {
   schedule: ScheduleInterval
   overrides: Map<string, boolean>
   showerTime?: string
+  onAlert?: (message: string) => void
 }
  
-export function useCountdown({ schedule, overrides, showerTime = '20:00' }: UseCountdownOptions) {
+export function useCountdown({ schedule, overrides, showerTime = '20:00', onAlert }: UseCountdownOptions) {
 
   const [countdownText, setCountdownText] = useState('...')
   const [ringProgress, setRingProgress] = useState(0)
   const [nextShowerDate, setNextShowerDate] = useState<Date | null>(null)
   const [showerDays, setShowerDays] = useState<Set<string>>(new Set())
+
+  const hasAlerted = useRef(false)
 
   useEffect(() => {
     function tick() {
@@ -48,6 +52,19 @@ export function useCountdown({ schedule, overrides, showerTime = '20:00' }: UseC
  
       const now = Date.now()
       const remaining = next.getTime() - now
+
+      // inside tick()
+    if (remaining > -1000 && remaining < 1000) {
+      if (!hasAlerted.current) {
+        hasAlerted.current = true
+        playDoneSound()
+        sendNotification('Time to shower!')
+        onAlert?.('Time to shower!')
+      }
+    } else {
+      // reset so it fires again for the next shower
+      hasAlerted.current = false
+    }
  
       setCountdownText(formatCountdown(remaining))
  
@@ -58,7 +75,7 @@ export function useCountdown({ schedule, overrides, showerTime = '20:00' }: UseC
  
     tick() 
  
-    const id = setInterval(tick, 60_000)
+    const id = setInterval(tick, 1_000)
  
     return () => clearInterval(id)
   }, [schedule, overrides, showerTime])

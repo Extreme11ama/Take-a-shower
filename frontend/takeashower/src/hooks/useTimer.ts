@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { formatTimerSeconds } from '../library/utils'
+import { sendNotification, playTimerDoneSound } from './audio'
  
 export function useTimer(initialMinutes: number = 10) {
   const [durationMins, setDurationMins] = useState(initialMinutes)
@@ -25,6 +26,8 @@ export function useTimer(initialMinutes: number = 10) {
           clearTimer()
           setRunning(false)
           setFinished(true)
+          playTimerDoneSound()
+          sendNotification('Your shower timer is done!')
           return 0
         }
         return prev - 1

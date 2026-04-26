@@ -120,3 +120,47 @@
 .backdropDark {
   background: rgba(20, 18, 16, 0.88);
 }
+
+.customRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.customInput {
+  flex: 1;
+  border: 1px solid rgba(181, 168, 154, 0.3);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: #3A3530;
+  background: #FAF7F2;
+  outline: none;
+}
+
+.customInput:focus {
+  border-color: #8BAE8A;
+}
+
+/* hides the up/down arrows on number inputs */
+.customInput::-webkit-outer-spin-button,
+.customInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.customBtn {
+  padding: 0.6rem 1rem;
+  background: #8BAE8A;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.customBtn:hover {
+  background: #7A9E79;
+}
