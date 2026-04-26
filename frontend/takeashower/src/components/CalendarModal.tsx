@@ -96,7 +96,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
             isPast ? styles.past : '',
             isToday ? styles.today : '',
             isShowerDay ? styles.showerDay : '',
-            isMissed ? styles.missedDay : '',  // ← new
+            isMissed ? styles.missedDay : '',  
           ].filter(Boolean).join(' ')
  
           return (
@@ -104,7 +104,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
               key={key}
               className={classes}
               onClick={isPast ? undefined : () => onToggleDay(key)}
-              onContextMenu={(e) => handleRightClick(e, key, dayLabel)}  // ← remove the isPast check
+              onContextMenu={(e) => handleRightClick(e, key, dayLabel)}  
             >
               {dayNum}
               {notes[key] && <div className={styles.noteDot} />}
@@ -149,7 +149,7 @@ export function CalendarModal({ open, onClose, showerDays, onToggleDay, notes, o
             value={noteText}
             onChange={e => setNoteText(e.target.value)}
             autoFocus
-            rows={4}
+            rows={3}
           />
           <div className={styles.noteActions}>
             {notes[notePopover.date] && (

@@ -33,7 +33,8 @@
   width: 100%;
   max-width: 420px;
   max-height: 85vh;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
+  overflow: hidden;
   animation: slideUp 0.25s ease;
 }
  
