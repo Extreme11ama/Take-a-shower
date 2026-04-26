@@ -1,3 +1,5 @@
+let timerAudioCtx: AudioContext | null = null
+
 export function playDoneSound() {
   try {
     const ctx = new AudioContext()
@@ -28,10 +30,17 @@ export function playDoneSound() {
 
 export function playTimerDoneSound() {
   try {
+
+        // cancel any existing sound first
+    if (timerAudioCtx) {
+      timerAudioCtx.close()
+      timerAudioCtx = null
+    }
+
     const ctx = new AudioContext()
+    timerAudioCtx = ctx
     const duration = 10 // seconds
 
-    // plays a repeating pulse for the full duration
     for (let i = 0; i < duration; i += 1.2) {
       const osc1 = ctx.createOscillator()
       const gain1 = ctx.createGain()
@@ -73,5 +82,12 @@ export async function sendNotification(message: string) {
     }
   } catch (e) {
     console.warn('Notification failed:', e)
+  }
+}
+
+export function stopTimerSound() {
+  if (timerAudioCtx) {
+    timerAudioCtx.close()
+    timerAudioCtx = null
   }
 }

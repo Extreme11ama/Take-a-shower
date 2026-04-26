@@ -12,7 +12,7 @@ const DURATIONS = [5, 10, 15, 20]
 interface TimerModalProps {
   open: boolean
   onClose: () => void
-  onAlert: (message: string) => void
+  onAlert: (message: string, duration?: number) => void
 }
  
 export function TimerModal({ open, onClose, onAlert }: TimerModalProps) {
@@ -26,7 +26,7 @@ export function TimerModal({ open, onClose, onAlert }: TimerModalProps) {
   const dashoffset = CIRCUMFERENCE * (1 - progress)
 
   useEffect(() => {
-    if (finished) onAlert('Shower timer done!')
+    if (finished) onAlert('Shower timer done!', 10)
   }, [finished])
  
   return (

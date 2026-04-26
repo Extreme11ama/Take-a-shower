@@ -14,7 +14,14 @@
   gap: 10px;
   z-index: 999;
   white-space: nowrap;
-  animation: toastLife 4s ease forwards;
+  cursor: pointer;
+  animation: toastLife var(--toast-duration, 4s) ease forwards;
+}
+
+.dismiss {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-left: 4px;
 }
 
 .icon {

@@ -11,6 +11,7 @@ import { MdCalendarMonth } from "react-icons/md"
 import { BsClock } from "react-icons/bs"
 import { FaStopwatch } from "react-icons/fa"
 import { Toast } from './components/Toast'
+import { stopTimerSound } from './hooks/audio'
 import './App.css'
  
 type ModalName = 'calendar' | 'schedule' | 'timer' | null
@@ -23,8 +24,9 @@ export default function App() {
   const [showerTime, setShowerTime] = useState('20:00')
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showerNotes, setShowerNotes] = useState<Record<string, string>>({})
-  const [toast, setToast] = useState<string | null>(null)
-  const clearToast = useCallback(() => setToast(null), [])
+  const [toast, setToast] = useState<{ message: string; duration: number } | null>(null)
+  const clearToast = useCallback(() => {setToast(null) 
+    stopTimerSound() }, [])
  
   const [loading, setLoading] = useState(true)
  
@@ -201,8 +203,8 @@ export default function App() {
     }
   }
 
-  function showToast(message: string) {
-    setToast(message)
+  function showToast(message: string, duration: number = 4) {
+    setToast({message, duration})
   }
 
  
@@ -359,8 +361,9 @@ export default function App() {
       />
       {toast && (
         <Toast
-          message={toast}
+          message={toast.message}
           //onDone={() => setToast(null)}
+          duration={toast.duration}
           onDone={clearToast}
         />
       )}
