@@ -44,6 +44,7 @@ The browser never talks to Supabase directly - all requests go through FastAPI, 
 ---
 
 ## Project structure
+```
 frontend/
 ├── src/
 │   ├── components/
@@ -66,6 +67,7 @@ frontend/
 backend/
 ├── main.py                      # FastAPI routes
 └── supabase_client.py           # Supabase connection
+```
 
 ---
 
