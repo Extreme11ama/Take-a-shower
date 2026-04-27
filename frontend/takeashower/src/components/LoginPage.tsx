@@ -42,6 +42,11 @@ export function LoginPage({ onLogin }: LoginPageProps) {
       setIsSubmitting(false)
     }
   }
+
+  function fillDemo() {
+    setUsername('demo')
+    setPassword('demo1234')
+  }
  
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'Enter') handleSubmit()
@@ -118,6 +123,12 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             : (mode === 'login' ? 'Sign in' : 'Create account')
           }
         </button>
+
+        {mode === 'login' && (
+          <button className={styles.demoBtn} onClick={fillDemo}>
+            Try demo account
+          </button>
+        )}
  
         <p className={styles.footer}>
           {mode === 'login' ? (
